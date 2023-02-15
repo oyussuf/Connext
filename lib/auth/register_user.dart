@@ -10,12 +10,17 @@ class RegisterUser extends StatefulWidget {
 
 class _RegisterUserState extends State<RegisterUser> {
   bool checkedValue = false;
+  bool _isObscure = true;
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    var phoneController;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,6 +54,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: screenHeight / 20,
                 ),
+                // first name TextField inside container
                 Container(
                   width: screenWidth / 1,
                   height: 50,
@@ -57,9 +63,8 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
-                    keyboardType: TextInputType.emailAddress,
-                    //controller: phoneController,
+                    keyboardType: TextInputType.name,
+                    controller: _firstNameController,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -80,6 +85,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: screenHeight / 60,
                 ),
+                // second name TextField inside container
                 Container(
                   width: screenWidth / 1,
                   height: 50,
@@ -88,8 +94,8 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
-                    keyboardType: TextInputType.emailAddress,
+                    controller: _lastNameController,
+                    keyboardType: TextInputType.name,
                     //controller: phoneController,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -111,6 +117,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: screenHeight / 60,
                 ),
+                // email TextField inside container
                 Container(
                   width: screenWidth / 1,
                   height: 50,
@@ -119,7 +126,7 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     //controller: phoneController,
                     decoration: InputDecoration(
@@ -139,10 +146,10 @@ class _RegisterUserState extends State<RegisterUser> {
                         ),
                   ),
                 ),
-                // password text field
                 SizedBox(
                   height: screenHeight / 60,
                 ),
+                // password TextField inside container
                 Container(
                   width: screenWidth / 1,
                   height: 50,
@@ -151,10 +158,27 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
+                    obscureText: _isObscure,
+                    controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     //controller: phoneController,
                     decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                          icon: _isObscure
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.deepOrange,
+                                )
+                              : Icon(
+                                  Icons.visibility,
+                                  color: Colors.deepOrange,
+                                ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.deepOrange, width: 2.0),
@@ -174,6 +198,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: screenHeight / 60,
                 ),
+                // confirm password TextField inside container
                 Container(
                   width: screenWidth / 1,
                   height: 50,
@@ -182,10 +207,27 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
+                    obscureText: _isObscure,
+                    controller: _confirmPasswordController,
                     keyboardType: TextInputType.visiblePassword,
                     //controller: phoneController,
                     decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                          icon: _isObscure
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.deepOrange,
+                                )
+                              : Icon(
+                                  Icons.visibility,
+                                  color: Colors.deepOrange,
+                                ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.deepOrange, width: 2.0),
@@ -242,7 +284,13 @@ class _RegisterUserState extends State<RegisterUser> {
                       minimumSize: const Size(300, 50),
                       maximumSize: const Size(300, 50),
                       backgroundColor: Colors.deepOrange),
-                  onPressed: () {},
+                  onPressed: () {
+                    print(_firstNameController.text.trim());
+                    print(_lastNameController.text.trim());
+                    print(_emailController.text.trim());
+                    print(_passwordController.text.trim());
+                    print(_confirmPasswordController.text.trim());
+                  },
                   child: Text(
                     'Sign In',
                     style: TextStyle(fontSize: 20),

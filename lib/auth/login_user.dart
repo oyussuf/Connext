@@ -11,6 +11,8 @@ class LoginUser extends StatefulWidget {
 }
 
 class _LoginUserState extends State<LoginUser> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -27,7 +29,7 @@ class _LoginUserState extends State<LoginUser> {
               ),
               // logo
               Image(
-                  image: AssetImage('assets/instaIcon.png'),
+                  image: AssetImage('assets/connextLogo.png'),
                   width: 80,
                   height: 80),
               // logo text
@@ -37,7 +39,7 @@ class _LoginUserState extends State<LoginUser> {
               Text(
                 'Connext',
                 style: TextStyle(
-                  color: Colors.deepOrange,
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

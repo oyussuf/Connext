@@ -57,7 +57,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/instaIcon.png
+  image: assets/connextLogo.png
   android: true
   ios: true
 
@@ -71,6 +71,7 @@ flutter:
 
   assets:
     - assets/instaIcon.png
+    - assets/connextLogo.png
 
 
   # To add assets to your application, add an assets section, like this:
