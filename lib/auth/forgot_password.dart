@@ -1,4 +1,5 @@
 import 'package:connext/auth/login_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,11 +11,11 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    var phoneController;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,7 +61,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     //controller: phoneController,
                     decoration: InputDecoration(
@@ -93,7 +94,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     minimumSize: const Size(300, 50),
                     maximumSize: const Size(300, 50),
                     backgroundColor: Colors.deepOrange),
-                onPressed: () {},
+                onPressed: () {
+                  if (_emailController.text.isEmpty) {
+                    print('email field is empty');
+                  } else if (!_emailController.text.endsWith('@pvamu.edu')) {
+                    print('invalid email');
+                  } else {
+                    passwordReset();
+                  }
+                },
                 child: Text(
                   'Submit',
                   style: TextStyle(fontSize: 20),
@@ -119,5 +128,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ],
       ),
     );
+  }
+
+  Future passwordReset() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
+      print('email sent');
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginUser()),
+          (route) => false);
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -1,5 +1,7 @@
 import 'package:connext/auth/forgot_password.dart';
 import 'package:connext/auth/register_user.dart';
+import 'package:connext/auth/verify_email.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ class LoginUser extends StatefulWidget {
 class _LoginUserState extends State<LoginUser> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -91,9 +94,8 @@ class _LoginUserState extends State<LoginUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    //controller: phoneController,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -123,7 +125,7 @@ class _LoginUserState extends State<LoginUser> {
                       ),
                   child: TextField(
                     cursorColor: Colors.deepOrange,
-                    controller: phoneController,
+                    controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     //controller: phoneController,
                     decoration: InputDecoration(
@@ -158,6 +160,17 @@ class _LoginUserState extends State<LoginUser> {
                     backgroundColor: Colors.deepOrange),
                 onPressed: () {
                   print('sign in clicked');
+                  if (_emailController.text.isEmpty) {
+                    print('email field is empty');
+                  } else if (!_emailController.text.endsWith('@pvamu.edu')) {
+                    print('invalid email');
+                  } else if (_passwordController.text.isEmpty ||
+                      _passwordController.text.length < 6) {
+                    print('invalid password');
+                  } else {
+                    print('all good');
+                    signInUser();
+                  }
                 },
                 child: Text(
                   'Sign In',
@@ -204,5 +217,19 @@ class _LoginUserState extends State<LoginUser> {
         ],
       ),
     );
+  }
+
+  Future signInUser() async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text)
+        .then((value) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => VerifyEmail()),
+          (route) => false);
+    }).onError((error, stackTrace) {
+      print('signinError');
+    });
   }
 }

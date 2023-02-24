@@ -1,5 +1,6 @@
 import 'package:connext/auth/login_user.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -7,6 +8,8 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MyApp());
 }
+
+DatabaseReference userRef = FirebaseDatabase.instance.ref().child("users");
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
