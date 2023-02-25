@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../utility/toast_messages.dart';
+
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
 
@@ -63,7 +65,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     cursorColor: Colors.deepOrange,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    //controller: phoneController,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -97,8 +98,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 onPressed: () {
                   if (_emailController.text.isEmpty) {
                     print('email field is empty');
+                    displayToastMessage("Please enter email", context);
                   } else if (!_emailController.text.endsWith('@pvamu.edu')) {
-                    print('invalid email');
+                    displayToastMessage("Invalid Email", context);
                   } else {
                     passwordReset();
                   }
@@ -132,14 +134,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Future passwordReset() async {
     try {
+      // sending Password ResetEmail to the entered email
+      // sendPasswordResetEmail is an inbuilt firebaseAuth function
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
       print('email sent');
+      displayToastMessage('Reset password email sent', context);
+      // send the user to sigin screen
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => LoginUser()),
           (route) => false);
     } on FirebaseAuthException catch (e) {
+      displayToastMessage('An error occurred', context);
       print(e.toString());
     }
   }

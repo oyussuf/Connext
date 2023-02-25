@@ -1,9 +1,14 @@
 import 'package:connext/auth/forgot_password.dart';
 import 'package:connext/auth/register_user.dart';
 import 'package:connext/auth/verify_email.dart';
+import 'package:connext/utility/toast_messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
+import '../models/student.dart';
 
 class LoginUser extends StatefulWidget {
   const LoginUser({Key? key}) : super(key: key);
@@ -20,7 +25,6 @@ class _LoginUserState extends State<LoginUser> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    var phoneController;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,16 +163,23 @@ class _LoginUserState extends State<LoginUser> {
                     maximumSize: const Size(300, 50),
                     backgroundColor: Colors.deepOrange),
                 onPressed: () {
+                  // after button  is clicked we are checking user entered information if its valid or not
                   print('sign in clicked');
                   if (_emailController.text.isEmpty) {
                     print('email field is empty');
+                    displayToastMessage("Please enter an email", context);
+                    // for example here we are checking if the email ends with @pvamu.edu or not
+                    // if not it will show a tost message that email is invalid
                   } else if (!_emailController.text.endsWith('@pvamu.edu')) {
                     print('invalid email');
+                    displayToastMessage("Invalid Email", context);
                   } else if (_passwordController.text.isEmpty ||
                       _passwordController.text.length < 6) {
                     print('invalid password');
+                    displayToastMessage("Invalid Password", context);
                   } else {
                     print('all good');
+                    // signinuser function is being called
                     signInUser();
                   }
                 },
@@ -219,17 +230,31 @@ class _LoginUserState extends State<LoginUser> {
     );
   }
 
+  // we are signing in user using inbuild firebaseAuth function signInWithEmailAndPassword
+  // and providing it with email and password.
+  // then is called when operation is successful and onError is called if its unsuccessful
   Future signInUser() async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text)
-        .then((value) {
+        .then((value) async {
+      displayToastMessage('Signed In Successful', context);
+      // sending user to verified email page to check if that is verified user or not
+      User? firebaseUser = FirebaseAuth.instance.currentUser;
+      await userRef.child(firebaseUser!.uid).once().then((DatabaseEvent event) {
+        DataSnapshot snap = event.snapshot;
+        if (snap.exists) {
+          student = Student.fromSnapshot(snap);
+        }
+      });
+
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => VerifyEmail()),
           (route) => false);
     }).onError((error, stackTrace) {
-      print('signinError');
+      // displaying a toast message about the error
+      displayToastMessage("Invalid Email or Password", context);
     });
   }
 }

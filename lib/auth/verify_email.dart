@@ -5,6 +5,8 @@ import 'package:connext/homepage/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../utility/toast_messages.dart';
+
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({Key? key}) : super(key: key);
 
@@ -16,25 +18,34 @@ class _VerifyEmailState extends State<VerifyEmail> {
   bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
+
+  // initstate is a already defined flutter function that runs before everything whenever a screen is lunched
+  // we are checking if user has email verified or not
   @override
   void initState() {
     super.initState();
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    // if not we are sending the verification email
     if (!isEmailVerified) {
       sendVerificationEmail();
+      displayToastMessage("Verification email sent", context);
     }
+    // a timer that tests very 3 second if email is verified or not.
     timer = Timer.periodic(Duration(seconds: 3), (_) => checkEmailVerified());
   }
 
+  // a function that sends verification email
   Future sendVerificationEmail() async {
     try {
+      // looking for current user logined
       final user = FirebaseAuth.instance.currentUser;
+      // sendEmailverification function is a firebaseAuth function that is called on user
       await user!.sendEmailVerification();
 
       setState(() {
         canResendEmail = false;
       });
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 10));
       setState(() {
         canResendEmail = true;
       });
@@ -43,6 +54,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
     }
   }
 
+  // this is checking if email is verified or not
   Future checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
@@ -52,6 +64,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
       timer!.cancel();
     }
   }
+
+  // we are using a if else statement is a short form here
+  // if isEmailverified is true go to HomePage()
+  // if it is false load scaffold
 
   @override
   Widget build(BuildContext context) => isEmailVerified
@@ -68,7 +84,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 height: 200,
               ),
               Text(
-                'We have sent you an Email with instructions to reset your password',
+                'We have sent you an email with instructions to reset your password',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -80,28 +96,40 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 height: 16,
               ),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(150, 40),
+                      maximumSize: const Size(150, 40),
+                      backgroundColor: Colors.deepOrange),
                   onPressed: () {
                     if (canResendEmail == true) {
                       sendVerificationEmail();
+                      displayToastMessage("Verification Email Sent", context);
                     }
                   },
-                  child: Text('Resend Email')),
+                  child: Text(
+                    'Resend Email',
+                    style: TextStyle(fontSize: 16),
+                  )),
               SizedBox(
                 height: 10,
               ),
-              TextButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginUser()),
-                      (route) => false);
-                },
-                child: Text('Cancel'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(50),
-                ),
-              )
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(150, 40),
+                      maximumSize: const Size(150, 40),
+                      backgroundColor: Colors.grey),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginUser()),
+                        (route) => false);
+                    displayToastMessage("Successfully Signed Out", context);
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(fontSize: 16),
+                  )),
             ],
           ),
         );

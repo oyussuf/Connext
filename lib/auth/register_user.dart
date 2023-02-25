@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import '../utility/toast_messages.dart';
 
 class RegisterUser extends StatefulWidget {
   const RegisterUser({Key? key}) : super(key: key);
@@ -17,11 +18,11 @@ class _RegisterUserState extends State<RegisterUser> {
   bool checkedValue = false;
   bool _isObscure = true;
   int genderValue = 0;
+  String genderString = 'Male';
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
 
   // Initializing Firebase Auth Package
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -308,27 +309,41 @@ class _RegisterUserState extends State<RegisterUser> {
                       maximumSize: const Size(300, 50),
                       backgroundColor: Colors.deepOrange),
                   onPressed: () {
+                    // if / else if are being user to check user entries
                     if (_emailController.text.isEmpty) {
                       print('email field is empty');
+                      displayToastMessage("Please enter your email", context);
                     } else if (!_emailController.text.endsWith('@pvamu.edu')) {
-                      print('invalid email');
+                      print('Invalid Email');
+                      displayToastMessage("Invalid Email", context);
                     } else if (_firstNameController.text.isEmpty ||
                         _lastNameController.text.isEmpty) {
                       print('please enter name');
+                      displayToastMessage("Please enter your name", context);
                     } else if (_passwordController.text.isEmpty ||
                         _passwordController.text.length < 6) {
                       print('please enter a valid password');
+                      displayToastMessage(
+                          "Please enter a longer password", context);
                     } else if (genderValue == 0) {
                       print('select gender');
+                      displayToastMessage('Please select your gender', context);
                     } else if (checkedValue == false) {
                       print('please accept term and conditions');
+                      displayToastMessage("Please accept TOS", context);
                     } else {
                       print('all good');
                       print(genderValue);
                       print(checkedValue);
-                    }
+                      if (genderValue == 1) {
+                        genderString = 'Male';
+                      } else {
+                        genderString = 'Female';
+                      }
 
-                    // registerNewUser(context);
+                      // register new user function
+                      registerNewUser(context);
+                    }
                   },
                   child: Text(
                     'Sign Up',
@@ -377,33 +392,44 @@ class _RegisterUserState extends State<RegisterUser> {
 
   // function for registring new users
   void registerNewUser(BuildContext context) async {
+    //registring new user in firebase base and storing values in a veriable firebaseUser to user later.
     final User? firebaseUser = (await auth
             .createUserWithEmailAndPassword(
                 email: _emailController.text,
                 password: _passwordController.text)
             .catchError((errMsg) {
+      displayToastMessage("An error occurred", context);
       print('error at signup');
     }))
         .user;
+
+// checking if firebase user exist or not and then storing data in realtime database
     if (firebaseUser != null) //user created
     {
-      // save his info
-      userRef.child(firebaseUser.uid);
+      displayToastMessage("Registration Successfull", context);
+      // userRef is a Referrence of user data.. means address on database
+      // it is initialized in main.dart.
+      // userRef.child(firebaseUser.uid);
 
+      // it a veriable called Map that containes multiple values.
       Map userDataMap = {
         "first_name": _firstNameController.text.trim(),
         "last_name": _lastNameController.text.trim(),
         "email": _emailController.text.trim(),
+        'gender': genderString
       };
-
+// sotring our Map user referance in child user id
+      // set is used to store the data
       userRef.child(firebaseUser.uid).set(userDataMap);
-      // displayToastMessage("Account Created", context);
 
+      displayToastMessage("Account Created", context);
+// after storing data we will navigate to verify screen
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => VerifyEmail()),
           (route) => false);
     } else {
+      displayToastMessage('Error Occurred', context);
       print('user not created');
     }
   } //signUpwithwmailapass
