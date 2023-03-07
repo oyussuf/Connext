@@ -1,14 +1,16 @@
 import 'package:connext/auth/forgot_password.dart';
 import 'package:connext/auth/register_user.dart';
-import 'package:connext/auth/verify_email.dart';
+import 'package:connext/homepage/default_page.dart';
 import 'package:connext/utility/toast_messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 import '../models/student.dart';
+import '../providers/appData.dart';
 
 class LoginUser extends StatefulWidget {
   const LoginUser({Key? key}) : super(key: key);
@@ -241,17 +243,28 @@ class _LoginUserState extends State<LoginUser> {
       displayToastMessage('Signed In Successful', context);
       // sending user to verified email page to check if that is verified user or not
       User? firebaseUser = FirebaseAuth.instance.currentUser;
-      await userRef.child(firebaseUser!.uid).once().then((DatabaseEvent event) {
+      await userRef
+          .child(firebaseUser!.uid)
+          .once()
+          .then((DatabaseEvent event) async {
         DataSnapshot snap = event.snapshot;
         if (snap.exists) {
           student = Student.fromSnapshot(snap);
         }
+        await retriveEventData(context);
       });
+      if (Provider.of<AppData>(context, listen: false)
+          .tripHistoryDataList
+          .isEmpty) {
+        await Future.delayed(Duration(seconds: 10));
+      }
 
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => VerifyEmail()),
+          MaterialPageRoute(builder: (context) => DefaultPage()),
           (route) => false);
+      print(
+          'in Login Page //  TripHistoryDataList :: ${Provider.of<AppData>(context, listen: false).tripHistoryDataList.length}');
     }).onError((error, stackTrace) {
       // displaying a toast message about the error
       displayToastMessage("Invalid Email or Password", context);

@@ -1,10 +1,12 @@
 import 'package:connext/auth/login_user.dart';
 import 'package:connext/auth/verify_email.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import '../models/student.dart';
 import '../utility/toast_messages.dart';
 
 class RegisterUser extends StatefulWidget {
@@ -420,10 +422,17 @@ class _RegisterUserState extends State<RegisterUser> {
       };
 // sotring our Map user referance in child user id
       // set is used to store the data
-      userRef.child(firebaseUser.uid).set(userDataMap);
+
+      await userRef.child(firebaseUser.uid).set(userDataMap);
 
       displayToastMessage("Account Created", context);
 // after storing data we will navigate to verify screen
+      await userRef.child(firebaseUser.uid).once().then((DatabaseEvent event) {
+        DataSnapshot snap = event.snapshot;
+        if (snap.exists) {
+          student = Student.fromSnapshot(snap);
+        }
+      });
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => VerifyEmail()),

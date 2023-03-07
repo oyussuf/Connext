@@ -24,10 +24,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   void initState() {
     super.initState();
+    //checking is email is verified or not
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     // if not we are sending the verification email
     if (!isEmailVerified) {
+      // send verification email function send new verification email to user
       sendVerificationEmail();
+      // tost message show to user after verification email is sent.
       displayToastMessage("Verification email sent", context);
     }
     // a timer that tests very 3 second if email is verified or not.
@@ -56,6 +59,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
   // this is checking if email is verified or not
   Future checkEmailVerified() async {
+    // here we are reloading user information
     await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
@@ -73,7 +77,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   Widget build(BuildContext context) => isEmailVerified
       ? HomePage()
       : Scaffold(
-          backgroundColor: Colors.grey.shade800,
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text('Verify Email'),
             backgroundColor: Colors.deepOrange,
@@ -87,7 +91,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 'We have sent you an email with instructions to reset your password',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.grey,
                   fontSize: 20,
                 ),
                 textAlign: TextAlign.center,
