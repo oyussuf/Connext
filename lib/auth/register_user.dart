@@ -435,6 +435,8 @@ class _RegisterUserState extends State<RegisterUser> {
           student = Student.fromSnapshot(snap);
         }
       });
+      await retriveServiceKeys(context);
+      await retriveEventKeys(context);
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => VerifyEmail()),

@@ -16,7 +16,7 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     print(
-        'in Page Event Page //  TripHistoryDataList :: ${Provider.of<AppData>(context, listen: false).tripHistoryDataList.length}');
+        'in Page Event Page //  TripHistoryDataList :: ${Provider.of<AppData>(context, listen: false).eventDataList.length}');
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: 60),
@@ -24,15 +24,14 @@ class _EventPageState extends State<EventPage> {
           itemBuilder: (BuildContext context, index) {
             return EventItem(
               eventM: Provider.of<AppData>(context, listen: false)
-                  .tripHistoryDataList[index],
+                  .eventDataList[index],
             );
           },
           separatorBuilder: (BuildContext context, index) => SizedBox(
             height: 2,
           ),
-          itemCount: Provider.of<AppData>(context, listen: false)
-              .tripHistoryDataList
-              .length,
+          itemCount:
+              Provider.of<AppData>(context, listen: false).eventDataList.length,
           padding: EdgeInsets.all(5),
           physics: ClampingScrollPhysics(),
           shrinkWrap: true,

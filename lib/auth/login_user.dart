@@ -1,6 +1,6 @@
 import 'package:connext/auth/forgot_password.dart';
 import 'package:connext/auth/register_user.dart';
-import 'package:connext/homepage/default_page.dart';
+import 'package:connext/auth/verify_email.dart';
 import 'package:connext/utility/toast_messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -251,20 +251,19 @@ class _LoginUserState extends State<LoginUser> {
         if (snap.exists) {
           student = Student.fromSnapshot(snap);
         }
+        await retriveServiceKeys(context);
         await retriveEventKeys(context);
       });
-      if (Provider.of<AppData>(context, listen: false)
-          .tripHistoryDataList
-          .isEmpty) {
+      if (Provider.of<AppData>(context, listen: false).eventDataList.isEmpty) {
         await Future.delayed(Duration(seconds: 10));
       }
 
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => DefaultPage()),
+          MaterialPageRoute(builder: (context) => VerifyEmail()),
           (route) => false);
       print(
-          'in Login Page //  TripHistoryDataList :: ${Provider.of<AppData>(context, listen: false).tripHistoryDataList.length}');
+          'in Login Page //  TripHistoryDataList :: ${Provider.of<AppData>(context, listen: false).eventDataList.length}');
     }).onError((error, stackTrace) {
       // displaying a toast message about the error
       displayToastMessage("Invalid Email or Password", context);
