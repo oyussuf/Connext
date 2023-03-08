@@ -5,13 +5,14 @@ class EventModel {
   String? eventDiscription;
   String? eventTime;
   String? eventLocation;
+  String? postedby;
 
-  EventModel({
-    this.eventTitle,
-    this.eventDiscription,
-    this.eventTime,
-    this.eventLocation,
-  });
+  EventModel(
+      {this.eventTitle,
+      this.eventDiscription,
+      this.eventTime,
+      this.eventLocation,
+      this.postedby});
 
   EventModel.fromSnapshot(DataSnapshot snapshot) {
     var data = snapshot.value as Map?;
@@ -21,6 +22,7 @@ class EventModel {
       eventDiscription = data["event_discription"];
       eventTime = data["event_date"];
       eventLocation = data["event_location"];
+      postedby = data["posted_by_fname"];
     }
   }
 }

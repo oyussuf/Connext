@@ -251,7 +251,7 @@ class _LoginUserState extends State<LoginUser> {
         if (snap.exists) {
           student = Student.fromSnapshot(snap);
         }
-        await retriveEventData(context);
+        await retriveEventKeys(context);
       });
       if (Provider.of<AppData>(context, listen: false)
           .tripHistoryDataList

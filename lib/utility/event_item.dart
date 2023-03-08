@@ -12,12 +12,8 @@ class EventItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        height: 100,
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.indigo.shade50,
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: BoxDecoration(color: Colors.deepOrange.shade100),
         child: Column(
           children: [
             Padding(
@@ -31,10 +27,16 @@ class EventItem extends StatelessWidget {
                       Text(
                         'Event Title',
                         style: TextStyle(
-                            color: Colors.indigo, fontWeight: FontWeight.bold),
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
                       ),
                       Text(
                         '${eventM.eventTitle}',
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
                       )
                     ],
                   ),
@@ -47,13 +49,16 @@ class EventItem extends StatelessWidget {
                       Text(
                         'Event Time',
                         style: TextStyle(
-                          color: Colors.indigo,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
                       ),
                       Text(
                         '${eventM.eventTime}',
-                        style: TextStyle(fontSize: 13),
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
                       )
                     ],
                   ),
@@ -66,27 +71,59 @@ class EventItem extends StatelessWidget {
                       Text(
                         'Event Location',
                         style: TextStyle(
-                            color: Colors.indigo, fontWeight: FontWeight.bold),
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
                       ),
                       Text(
                         '${eventM.eventLocation}',
-                        style: TextStyle(fontSize: 12),
-                      )
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
+                      ),
                     ],
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Details',
+                        'Posted By',
                         style: TextStyle(
-                            color: Colors.indigo, fontWeight: FontWeight.bold),
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      Text(
+                        '${eventM.postedby}',
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        'Discription',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      SizedBox(
+                        height: 5,
                       ),
                       Text(
                         '${eventM.eventDiscription}',
+                        textAlign: TextAlign.center,
                       )
                     ],
                   ),

@@ -77,6 +77,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     cursorColor: Colors.deepOrange,
                     keyboardType: TextInputType.name,
                     controller: _firstNameController,
+                    textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -108,6 +109,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     cursorColor: Colors.deepOrange,
                     controller: _lastNameController,
                     keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
                     //controller: phoneController,
                     decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(

@@ -23,13 +23,13 @@ class _AddEventState extends State<AddEvent> {
         child: Column(
           children: [
             SizedBox(
-              height: 50,
+              height: 60,
             ),
             // page Title
             Text(
               'Add Event',
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.deepOrange),
             ),
@@ -52,6 +52,7 @@ class _AddEventState extends State<AddEvent> {
                     decoration: BoxDecoration(),
                     child: TextField(
                       cursorColor: Colors.deepOrange,
+                      textCapitalization: TextCapitalization.words,
                       controller: eventNameController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -114,7 +115,8 @@ class _AddEventState extends State<AddEvent> {
                         child: TextField(
                             cursorColor: Colors.deepOrange,
                             controller: dateController,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                             )),
@@ -139,7 +141,8 @@ class _AddEventState extends State<AddEvent> {
                         child: TextField(
                             cursorColor: Colors.deepOrange,
                             controller: locationController,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                             )),
@@ -229,9 +232,13 @@ class _AddEventState extends State<AddEvent> {
     );
   }
 
+  // posting event
+
   Future postEvent() async {
+    // creates a folder for a event with a unique name
     eventRefKey = await FirebaseDatabase.instance.ref().child("Events").push();
 
+    // map veriable stores multiple values in it
     Map serviceDataMap = {
       'event_name': eventNameController.text.trim(),
       'event_discription': discriptionController.text.trim(),
@@ -242,5 +249,6 @@ class _AddEventState extends State<AddEvent> {
     };
 
     await eventRefKey!.set(serviceDataMap);
+    displayToastMessage('Event Posted', context);
   }
 }

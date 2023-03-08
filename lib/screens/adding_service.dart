@@ -1,3 +1,4 @@
+import 'package:connext/utility/toast_messages.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class _AddServiceState extends State<AddService> {
   String dropdownValueCategory = 'Hair';
   String dropdownValueSC = 'Coloring';
   TextEditingController discription = TextEditingController();
+  TextEditingController servicePriceController = TextEditingController();
   DatabaseReference? serviceKey;
   @override
   Widget build(BuildContext context) {
@@ -21,126 +23,177 @@ class _AddServiceState extends State<AddService> {
         child: Column(
           children: [
             SizedBox(
-              height: 80,
+              height: 60,
             ),
-            Text('Add a service'),
+            Text(
+              'Add a service',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepOrange),
+            ),
             SizedBox(
               height: 20,
             ),
-            // service
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Service Name'),
-                SizedBox(
-                  width: 60,
-                ),
-                DropdownButton<String>(
-                  value: dropdownValueSN,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                children: [
+                  // service
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Service Name',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepOrange)),
+                      SizedBox(
+                        width: 60,
+                      ),
+                      DropdownButton<String>(
+                        value: dropdownValueSN,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.black54,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValueSN = newValue!;
+                          });
+                        },
+                        items: <String>['Beauty']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownValueSN = newValue!;
-                    });
-                  },
-                  items: <String>['Beauty']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-            // category
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Category'),
-                SizedBox(
-                  width: 90,
-                ),
-                DropdownButton<String>(
-                  value: dropdownValueCategory,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
+                  // category
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Category',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepOrange)),
+                      SizedBox(
+                        width: 90,
+                      ),
+                      DropdownButton<String>(
+                        value: dropdownValueCategory,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.black54,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValueCategory = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Hair',
+                          'MakeUp',
+                          'Nails',
+                          'Lashes',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownValueCategory = newValue!;
-                    });
-                  },
-                  items: <String>[
-                    'Hair',
-                    'MakeUp',
-                    'Nails',
-                    'Lashes',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-            // sub-category
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Sub=Category'),
-                SizedBox(
-                  width: 60,
-                ),
-                DropdownButton<String>(
-                  value: dropdownValueSC,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
+                  // sub-category
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Sub=Category',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepOrange)),
+                      SizedBox(
+                        width: 60,
+                      ),
+                      DropdownButton<String>(
+                        value: dropdownValueSC,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.black54,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValueSC = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Coloring',
+                          'Haircuts',
+                          'Locs',
+                          'Protective Styles',
+                          'Wings'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownValueSC = newValue!;
-                    });
-                  },
-                  items: <String>[
-                    'Coloring',
-                    'Haircuts',
-                    'Locs',
-                    'Protective Styles',
-                    'Wings'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ],
+                  // service price
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Service Price',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepOrange)),
+                      Container(
+                        width: 100,
+                        height: 50,
+                        decoration: BoxDecoration(),
+                        child: TextField(
+                            cursorColor: Colors.deepOrange,
+                            controller: servicePriceController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                            )),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             SizedBox(
-              height: 60,
+              height: 30,
             ),
             Column(
               children: [
-                Text('Discription'),
+                Text('Discription',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepOrange)),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Container(
@@ -161,11 +214,15 @@ class _AddServiceState extends State<AddService> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Column(
               children: [
-                Text('Add Image'),
+                Text('Add Image',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepOrange)),
                 SizedBox(
                   height: 10,
                 ),
@@ -187,8 +244,14 @@ class _AddServiceState extends State<AddService> {
                 ),
               ],
             ),
-
+            SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(300, 50),
+                    maximumSize: const Size(300, 50),
+                    backgroundColor: Colors.deepOrange),
                 onPressed: () {
                   print(dropdownValueSN);
                   print(dropdownValueCategory);
@@ -197,7 +260,13 @@ class _AddServiceState extends State<AddService> {
 
                   postService();
                 },
-                child: Text('Post'))
+                child: Text(
+                  'Post Service',
+                  style: TextStyle(
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ))
           ],
         ),
       ),
@@ -212,6 +281,8 @@ class _AddServiceState extends State<AddService> {
       'category': dropdownValueSN,
       'sub-category': dropdownValueSC,
       'description': discription.text.trim(),
+      'service_price': servicePriceController.text.trim(),
+      'posted_by': student!.id
     };
 
     await serviceKey!.set(serviceDataMap);

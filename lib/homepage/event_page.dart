@@ -18,22 +18,25 @@ class _EventPageState extends State<EventPage> {
     print(
         'in Page Event Page //  TripHistoryDataList :: ${Provider.of<AppData>(context, listen: false).tripHistoryDataList.length}');
     return Scaffold(
-      body: ListView.separated(
-        itemBuilder: (BuildContext context, index) {
-          return EventItem(
-            eventM: Provider.of<AppData>(context, listen: false)
-                .tripHistoryDataList[index],
-          );
-        },
-        separatorBuilder: (BuildContext context, index) => SizedBox(
-          height: 3,
+      body: Padding(
+        padding: EdgeInsets.only(top: 60),
+        child: ListView.separated(
+          itemBuilder: (BuildContext context, index) {
+            return EventItem(
+              eventM: Provider.of<AppData>(context, listen: false)
+                  .tripHistoryDataList[index],
+            );
+          },
+          separatorBuilder: (BuildContext context, index) => SizedBox(
+            height: 2,
+          ),
+          itemCount: Provider.of<AppData>(context, listen: false)
+              .tripHistoryDataList
+              .length,
+          padding: EdgeInsets.all(5),
+          physics: ClampingScrollPhysics(),
+          shrinkWrap: true,
         ),
-        itemCount: Provider.of<AppData>(context, listen: false)
-            .tripHistoryDataList
-            .length,
-        padding: EdgeInsets.all(5),
-        physics: ClampingScrollPhysics(),
-        shrinkWrap: true,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

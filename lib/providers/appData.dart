@@ -2,12 +2,12 @@ import 'package:connext/models/eventModel.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppData with ChangeNotifier {
-  int numberOfTrips = 0;
+  int numberOfEvents = 0;
   List<String> tripHistoryKeys = [];
   List<EventModel> tripHistoryDataList = [];
 
-  void updateNumberOfTrips(int newTrips) {
-    numberOfTrips = newTrips;
+  void updateNumberOfTrips(int newEvent) {
+    numberOfEvents = newEvent;
     notifyListeners();
   }
 

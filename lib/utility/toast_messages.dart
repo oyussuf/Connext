@@ -25,7 +25,7 @@ Student? student;
 
 EventModel? eventModel;
 
-Future retriveEventData(BuildContext context) async {
+Future retriveEventKeys(BuildContext context) async {
   print('retriveEventData .....');
   await eventRef.once().then((DatabaseEvent event) async {
     DataSnapshot snap = event.snapshot;
