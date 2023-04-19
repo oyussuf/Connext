@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "937219633870",
+    "project_id": "connext-pv",
+    "storage_bucket": "connext-pv.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937219633870:android:851fa20a9847068d2e969f",
+        "android_client_info": {
+          "package_name": "com.pvamu.connext.connext"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937219633870-1dvgn4jrlvp1fplvirsvd2u06pmsq937.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pvamu.connext.connext",
+            "certificate_hash": "243ee650ad6f31c09d40262fc81cfb1de0ff1e96"
+          }
+        },
+        {
+          "client_id": "937219633870-7857mg7bhkvhm5kt96jlanfufc637aca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMoVy9Vcc0WTFc6l0vyUXX4tosIEifQDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937219633870-7857mg7bhkvhm5kt96jlanfufc637aca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
